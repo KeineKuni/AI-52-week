@@ -6,7 +6,7 @@ class Product:
 
 
 # 這是我們從資料庫抓下來的原始資料
-raw_data = [
+raw_data = [  # 容器型別
     {"name": "魚油", "price": 200, "cost": 120},
     {"name": "關節寶", "price": 100, "cost": 50},
     {"name": "錯誤測試", "price": 0, "cost": 30},
