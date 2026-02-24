@@ -31,3 +31,25 @@ df["下單小時"] = df["發佈日期"].dt.hour
 # 看看每個小時有多少訂單
 hourly_counts = df["下單小時"].value_counts().sort_index()
 print(hourly_counts)
+
+
+# 1. 讀取與基本清理
+df = pd.read_csv("vitatiere_sales.csv")
+df["淨銷售額"] = (
+    df["淨銷售額"]
+    .astype(str)
+    .str.replace("NT\$", "", regex=True)
+    .str.replace(",", "")
+    .str.strip()
+)
+df["淨銷售額"] = pd.to_numeric(df["淨銷售額"])
+df["發佈日期"] = pd.to_datetime(df["發佈日期"])
+
+# 2. 標註週末
+df["是週末"] = df["發佈日期"].dt.dayofweek >= 5
+
+# 3. 比較營收
+weekend_analysis = df.groupby("是週末")["淨銷售額"].agg(["sum", "mean", "count"])
+print(weekend_analysis)
+
+df.groupby("歸屬")["淨銷售額"].mean()
